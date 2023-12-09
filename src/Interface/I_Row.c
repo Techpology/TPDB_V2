@@ -65,6 +65,25 @@ void EmptyRowValues(TPTable_Row *_self)
 	}
 }
 
+void** GetTypeValues(TPTable *table, TPTable_Row *row)
+{
+	void **values = malloc(sizeof(void*)*table->ColCount);
+	for(int i = 0; i < table->ColCount; i ++){
+		/* Create a copy of the value */
+		void *gval = GetRowValue(table, row, i);
+
+		values[i] = gval;
+	}
+	return values;
+}
+void FreeTypeValues(void** typevalues, size_t arr_size)
+{
+	for(size_t i = 0; i < arr_size; i++){
+		free(typevalues[i]);
+	}
+	free(typevalues);
+}
+
 enum TP_ERROR_TYPES UpdateRow(TPTable *_parent, TPTable_Row *_self)
 {
 	char *ToStore 	= TP_StrnCatArray(_self->Values, _self->ValCount, ";");
